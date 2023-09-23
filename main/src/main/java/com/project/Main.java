@@ -8,7 +8,7 @@ public class Main {
 
         Main m = new Main();
         m.exec();
-
+        System.out.println("=--end");
     }
 
     void exec(){
@@ -42,11 +42,13 @@ public class Main {
         });
         l.start();
         long t1 = System.currentTimeMillis();
-        while (System.currentTimeMillis() - t1 < 50000){
+        while (System.currentTimeMillis() - t1 < 500){
 //            System.out.println(System.currentTimeMillis() - t1);
             continue;
         }System.out.println(System.currentTimeMillis() - t1);
         l.unsubscribe("top");
         System.out.println(System.currentTimeMillis() - t1+ ": " + "asdfasdf");
+        l.stop();
+        System.out.println("main ended");
     }
 }

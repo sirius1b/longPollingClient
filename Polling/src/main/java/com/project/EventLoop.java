@@ -3,15 +3,16 @@ package com.project;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class EventLoop implements Runnable{
     String socketAddress;
-    Map<String, Boolean> pollingClientActive;
-    Map<String, Handler> handlers;
+    ConcurrentHashMap<String, Boolean> pollingClientActive;
+    ConcurrentHashMap<String, Handler> handlers;
 
-    Map<String, LinkedList<String>> results;
+    ConcurrentHashMap<String, LinkedList<String>> results;
     ExecutorService eventLoopExecutor;
     ExecutorService handlerExector;
     boolean running;
@@ -20,9 +21,9 @@ public class EventLoop implements Runnable{
 
     public EventLoop(String socketAddress){
         this.socketAddress = socketAddress;
-        this.pollingClientActive = new HashMap<>();
-        this.handlers = new HashMap<>();
-        this.results = new HashMap<>();
+        this.pollingClientActive = new ConcurrentHashMap<>();
+        this.handlers = new ConcurrentHashMap<>();
+        this.results = new ConcurrentHashMap<>();
         eventLoopExecutor = Executors.newSingleThreadExecutor();
         handlerExector = Executors.newCachedThreadPool();
         running = false;
@@ -62,6 +63,8 @@ public class EventLoop implements Runnable{
     }
     public void stop(){
         running = false;
+        eventLoopExecutor.shutdownNow();
+        handlerExector.shutdownNow();
     }
 
     @Override
