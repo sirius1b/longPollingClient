@@ -1,6 +1,8 @@
 package com.project;
 
-public class Main implements Handler{
+
+
+public class Main implements Handler {
     public static void main(String[] args) {
 
         Main m = new Main();
