@@ -9,6 +9,9 @@
 - Based on Event Loop implementation
 - Requires a server running on supplied socket Address &rarr; [Starter Reference](https://github.com/sirius1b/ChatServer-Python)
 
+![](https://github.com/sirius1b/longPollingClient/blob/ReadMe-Update/demo.gif)
+
+
 ##### Tasks: 
 - [x] Achieve Concurrent Execution for multiple event subscription
 - [x] Event loop implementation
