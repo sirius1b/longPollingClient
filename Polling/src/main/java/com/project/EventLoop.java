@@ -1,13 +1,18 @@
 package com.project;
 
-import java.util.HashMap;
+
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 
 public class EventLoop implements Runnable{
+
+    private static final Logger logger = Logger.getLogger(String.valueOf(EventLoop.class));
     String socketAddress;
     ConcurrentHashMap<String, Boolean> pollingClientActive;
     ConcurrentHashMap<String, Handler> handlers;
@@ -27,6 +32,7 @@ public class EventLoop implements Runnable{
         eventLoopExecutor = Executors.newSingleThreadExecutor();
         handlerExector = Executors.newCachedThreadPool();
         running = false;
+        logger.setLevel(Level.ALL);
     }
 
     public void subscribe(String eventIdentifier, Handler handler){
@@ -51,20 +57,30 @@ public class EventLoop implements Runnable{
     }
 
     public void submitResponse(String topic, String data){
+        logger.info("got data on: " + topic + " data: " + data);
         if (pollingClientActive.containsKey(topic)){
             results.get(topic).add(data);
         }
     }
 
     public void start(){
-        running = true;
-        eventLoopExecutor.execute(this);
+        if (!running ){
+            running = true;
+            eventLoopExecutor.execute(this);
+        }
+
 
     }
     public void stop(){
         running = false;
         eventLoopExecutor.shutdownNow();
         handlerExector.shutdownNow();
+        eventLoopExecutor = Executors.newSingleThreadExecutor();
+        handlerExector = Executors.newCachedThreadPool();
+    }
+
+    public boolean getStatus(){
+        return running;
     }
 
     @Override
@@ -80,8 +96,9 @@ public class EventLoop implements Runnable{
                 if (pollingClientActive.containsKey(e.getKey())){
                     while (!e.getValue().isEmpty()){
                         String data = e.getValue().removeFirst();
+                        logger.info("about to submit: for " + data);
                         handlerExector.submit(() ->
-                                handlers.get(e.getKey()).handle(e.getKey(), data));
+                                handlers.get(e.getKey()).handle(Parser.readJson(data, DataResponse.class)));
                     }
                 }
             }
@@ -91,7 +108,8 @@ public class EventLoop implements Runnable{
 
     public void reportException(Throwable exception)  {
         if (running)
-            System.out.println("->> stoping: Event loop due exception: "+ exception.getMessage());
+            logger.info("->> stoping: Event loop due exception: "+ exception.getMessage());
+        logger.info("stopping event loop");
         stop();
     }
 }

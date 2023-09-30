@@ -13,10 +13,14 @@ public class PollingConnection {
                  .followRedirects(HttpClient.Redirect.NEVER)
                  .connectTimeout(Duration.ofSeconds(2))
                  .build();
+         DataResponse dataResponse = new DataResponse();
+         dataResponse.setEvent(topic);
          HttpRequest request = HttpRequest.newBuilder()
-                 .uri(URI.create("http://" + socketAddress + "/updates/"+ topic))
+                 .uri(URI.create("http://" + socketAddress + "/updates"))
+                 .header("Content-Type","application/json")
+                 .POST(HttpRequest.BodyPublishers.ofString(Parser.writeJson(dataResponse)))
                  .build();
-//         client.send(request, HttpResponse.BodyHandlers.ofString());
+
          client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
                  .whenComplete((response, exception) -> {
                      if (exception != null)

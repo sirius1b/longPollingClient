@@ -13,9 +13,9 @@ public class Test {
         ObjectMapper objectMapper = new ObjectMapper();
         DataResponse myObject = objectMapper.readValue(json, DataResponse.class);
 
-        System.out.println("Name: " + myObject.getWho());
-        System.out.println("Age: " + myObject.getWhat());
-        System.out.println("daf: " + myObject.getWhen());
+//        System.out.println("Name: " + myObject.getWho());
+//        System.out.println("Age: " + myObject.getWhat());
+//        System.out.println("daf: " + myObject.getWhen());
 
         System.out.println(objectMapper.writeValueAsString(myObject));
 

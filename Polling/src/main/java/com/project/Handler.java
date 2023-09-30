@@ -2,6 +2,6 @@ package com.project;
 
 public interface Handler {
 
-    public void handle(String event, String json);
+    public void handle(DataResponse dataResponse);
 
 }

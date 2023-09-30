@@ -11,6 +11,7 @@
     <modules>
         <module>Polling</module>
         <module>main</module>
+
     </modules>
 
     <properties>
