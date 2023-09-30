@@ -4,6 +4,7 @@
     Get Updates in RealTime
 </h2><h3>Long Polling Client</h3></center>
 <hr/>
+
 - For Realtime communication over HTTP
 - Based on Event Loop implementation
 
