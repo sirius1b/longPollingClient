@@ -7,8 +7,9 @@
 
 - For Realtime communication over HTTP
 - Based on Event Loop implementation
+- Requires a server running on supplied socket Address &rarr; [Starter Reference](https://github.com/sirius1b/ChatServer-Python)
 
-##### Task: 
+##### Tasks: 
 - [x] Achieve Concurrent Execution for multiple event subscription
 - [x] Event loop implementation
 - [x] maven project
@@ -17,6 +18,8 @@
 - [ ] Unit Testng, Maybe 🤔️
 - [x] Generate Jar &rarr; Maven Install Task
 - [ ] Publish on Maven Central 
+
+
 
 #### Refs:
 -   [Implementing Your Own Event Loop From Scratch
